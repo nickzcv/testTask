@@ -144,3 +144,7 @@
 .tasks > div {
   min-width: 50%;
 }
+
+.sorting {
+  padding: 10px;
+}

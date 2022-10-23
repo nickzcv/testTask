@@ -1,5 +1,7 @@
 // On app load, get all tasks from localStorage
-window.onload = render(0);
+window.addEventListener('load',() => {
+  render(0);
+});
 
 // On form submit add task and render
 document.querySelector('form').addEventListener('submit', event => {
@@ -17,6 +19,17 @@ document.querySelector('#search').addEventListener('keyup', event => {
     render(searchResults);
   }
 });
+
+document.querySelector('.tasks').addEventListener('click', (event) => {
+  event.preventDefault();
+  const isLink = event.target.nodeName === 'A';
+  if (!isLink) {
+    return;
+  }
+  const sortParam = event.target.getAttribute('data-sort');
+  sortTasks(sortParam);
+})
+
 
 /* 
   Render function
@@ -133,4 +146,73 @@ function editTask(event) {
   });
   // Update local storage
   localStorage.setItem('tasks', JSON.stringify(tasks));
+}
+
+/* 
+  Sorting function
+*/
+function sortTasks(sortParam) {
+  let tasks = Array.from(JSON.parse(localStorage.getItem('tasks')));
+
+  switch (sortParam) {
+    case 'asc-first': {
+      tasks.sort((a, b) => {
+        const taskA = a.task.toUpperCase(); // ignore upper and lowercase
+        const taskB = b.task.toUpperCase(); // ignore upper and lowercase
+        if (taskA > taskB & !a.completed & !b.completed) {
+          return -1;
+        }
+        if (taskA < taskB & !a.completed & !b.completed) {
+          return 1;
+        }
+        return 0;
+      });
+      break;
+    }
+    case 'desc-first': {
+      tasks.sort((a, b) => {
+        const taskA = a.task.toUpperCase();
+        const taskB = b.task.toUpperCase();
+        if (taskA < taskB & !a.completed & !b.completed) {
+          return -1;
+        }
+        if (taskA > taskB & !a.completed & !b.completed) {
+          return 1;
+        }
+        return 0;
+      });
+      break;
+    }
+    case 'asc-second': {
+      tasks.sort((a, b) => {
+        const taskA = a.task.toUpperCase();
+        const taskB = b.task.toUpperCase();
+        if (taskA > taskB & a.completed & b.completed) {
+          return -1;
+        }
+        if (taskA < taskB & a.completed & b.completed) {
+          return 1;
+        }
+        return 0;
+      });
+      break;
+    }
+    case 'desc-second': {
+      tasks.sort((a, b) => {
+        const taskA = a.task.toUpperCase();
+        const taskB = b.task.toUpperCase();
+        if (taskA < taskB & a.completed & b.completed) {
+          return -1;
+        }
+        if (taskA > taskB & a.completed & b.completed) {
+          return 1;
+        }
+        return 0;
+      });
+      break;
+    }
+  }
+
+  localStorage.setItem('tasks', JSON.stringify(tasks));
+  render(0);
 }
