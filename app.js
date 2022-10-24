@@ -76,14 +76,6 @@ function addTask() {
   }
   // Add task to local storage
   localStorage.setItem('tasks', JSON.stringify([...JSON.parse(localStorage.getItem('tasks') || '[]'), { task: task.value, completed: false }]));
-  // Create list item, add innerHTML and append to ul
-  const li = document.createElement("li");
-  li.innerHTML = `<input type="checkbox" onclick="taskComplete(this)" class="check">
-    <input type="text" value="${task.value}" class="task" onfocus="getCurrentTask(this)" onblur="editTask(this)">
-    <strong onclick="removeTask(this)">X</strong>`;
-  list.insertBefore(li, list.children[0]);
-  // clear input
-  task.value = '';
 }
 
 /* 
