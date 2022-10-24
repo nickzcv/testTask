@@ -63,7 +63,6 @@ function render(searchResults) {
 */
 function addTask() {
   const task = document.querySelector('form input');
-  const list = document.querySelector('#inprocess');
   // Return if task is empty
   if (task.value === '') {
     alert("Please add some task!");
